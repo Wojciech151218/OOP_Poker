@@ -1,0 +1,3 @@
+/home/wojciech/CLionProjects/OOP_Poker/cmake-build-debug/CMakeFiles/OOP_Poker.dir
+/home/wojciech/CLionProjects/OOP_Poker/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/wojciech/CLionProjects/OOP_Poker/cmake-build-debug/CMakeFiles/rebuild_cache.dir
