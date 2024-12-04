@@ -16,7 +16,7 @@ class Player {
 public:
     enum PlayerStatus{InGame,Fold,AllIn};
     void print_player_status();
-    size_t do_action(const Action & action, size_t& calling_players, size_t& folded_players, size_t current_bet);
+    size_t do_action(const Action & action, size_t& calling_players, size_t current_bet);
     void set_cards(std::vector<Card> & cards);
     Player(size_t starting_stake);
     PlayerStatus get_status() const;

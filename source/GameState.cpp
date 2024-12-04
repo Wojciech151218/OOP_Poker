@@ -29,7 +29,6 @@ void GameState::increment_phase(GamePhase& phase)
 void GameState::reset_phase()
 {
     calling_players =0;
-    folded_players =0;
     current_bet =0;
     current_player = 0;
 }
@@ -59,7 +58,6 @@ GameState::GameState(const std::vector<Player>& players, const GameProperties& g
     phase = PreFlop;
     current_player = 0;
     calling_players =0;
-    folded_players =0;
     deal_cards();
 
 }
@@ -81,12 +79,12 @@ void GameState::print_state()
 void GameState::process_action(const Action& action)
 {
 
-    auto bet = players[current_player].do_action(action, calling_players, folded_players, TODO);
+    auto bet = players[current_player].do_action(action, calling_players, current_bet);
     let player_status = players[current_player].get_status();
 
     switch(player_status) {
     case Player::Fold:
-        folded_players++;
+        folded_players.emplace_back(current_player);
         break;
 
     default:
@@ -96,7 +94,7 @@ void GameState::process_action(const Action& action)
 
         break;
     }
-    if(folded_players >= players.size()-1)
+    if(folded_players.size() >= players.size()-1)
     {
         distribute_pot();
         reset_game_state();
@@ -108,7 +106,7 @@ void GameState::process_action(const Action& action)
 
     if(current_player == players.size())
     {
-        if(players.size()- folded_players > calling_players)
+        if(players.size() - folded_players.size() > calling_players)
         {
             current_player = 0;
             return;

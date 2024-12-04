@@ -18,15 +18,15 @@ void Player::print_player_status()
 
 }
 
-size_t Player::do_action(const Action& action, size_t& calling_players, size_t& folded_players, size_t current_bet)
+size_t Player::do_action(const Action& action, size_t& calling_players, size_t current_bet)
 {
+    if(player_status == Fold) return 0;
     size_t chips_given = 0;
     int bank_roll_int = static_cast<int>(bank_roll);
 
     switch (action.get_action_type())
     {
     case Action::Fold:
-        folded_players++;
         player_status = Fold;
         return 0;
     case Action::CheckCall:

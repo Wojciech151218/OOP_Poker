@@ -3,7 +3,9 @@ project(OOP_Poker)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(OOP_Poker main.cpp
+# Add the executable target
+add_executable(OOP_Poker
+        main.cpp
         headers/utils.h
         source/Card.cpp
         headers/Card.h
@@ -19,3 +21,7 @@ add_executable(OOP_Poker main.cpp
         headers/Player.h
         source/UserInterface.cpp
         headers/UserInterface.h)
+
+# Find and link Crow
+find_package(Crow REQUIRED)
+target_link_libraries(OOP_Poker PRIVATE Crow)

@@ -35,8 +35,9 @@ private:
     void increment_phase(GamePhase & phase);
     void reset_phase();
     size_t calling_players;
-    size_t folded_players;
+
     std::string phase_to_string();
+    std::vector<size_t> folded_players;
     GameProperties game_properties;
     Deck deck;
     std::vector<Card> table;
