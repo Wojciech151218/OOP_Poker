@@ -1,27 +1,25 @@
 cmake_minimum_required(VERSION 3.28)
 project(OOP_Poker)
 
+# Specify the C++ standard
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Add the executable target
+# Add executable target
 add_executable(OOP_Poker
         main.cpp
-        headers/utils.h
         source/Card.cpp
-        headers/Card.h
         source/Deck.cpp
-        headers/Deck.h
         source/GameState.cpp
-        headers/GameState.h
         source/Action.cpp
-        headers/Action.h
         source/Hand.cpp
-        headers/Hand.h
         source/Player.cpp
-        headers/Player.h
-        source/UserInterface.cpp
-        headers/UserInterface.h)
+        source/UserInterface.cpp)
 
-# Find and link Crow
-find_package(Crow REQUIRED)
-target_link_libraries(OOP_Poker PRIVATE Crow)
+# Include the Crow library and headers directory
+target_include_directories(OOP_Poker PRIVATE
+        ${CMAKE_SOURCE_DIR}/Crow
+        ${CMAKE_SOURCE_DIR}/headers)
+
+# Link pthread for multithreading
+target_link_libraries(OOP_Poker PRIVATE pthread)
