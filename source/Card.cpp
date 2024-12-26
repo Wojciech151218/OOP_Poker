@@ -7,7 +7,7 @@
 #include <iostream>
 #include <string>
 
-void Card::print() const {
+std::string Card::to_string() const {
     std::string rank_str;
     std::string suit_str;
 
@@ -37,8 +37,7 @@ void Card::print() const {
     case Spades:   suit_str = "s"; break;
     }
 
-    // Print formatted card representation
-    std::cout << rank_str << suit_str;
+    return rank_str+suit_str;
 }
 
 Card::Card(Suit suit, Rank rank) :suit(suit),rank(rank)

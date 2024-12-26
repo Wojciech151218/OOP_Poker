@@ -23,11 +23,25 @@ public:
     enum GamePhase{PreFlop,Flop,Turn,River};
 
     void print_state();
-    void process_action(const Action& action);
+    void process_action(const Action &action);
+    Action::ActionType make_random_action();
+    bool check_if_is_current_player(size_t player)const;
+
+    size_t get_calling_players() const { return calling_players; }
+    std::vector<size_t> get_folded_players() const { return folded_players; }
+    GameProperties get_game_properties() const { return game_properties; }
+    Deck get_deck() const { return deck; }
+    std::vector<Card> get_table() const { return table; }
+    size_t get_current_player_index() const { return current_player; }
+    GamePhase get_phase() const { return phase; }
+    size_t get_pot() const { return pot; }
+    size_t get_current_bet() const { return current_bet; }
+    std::vector<Player> get_players() const { return players; }
+    std::vector<size_t> get_player_bets() const { return player_bets; }
+    const Player & get_current_player() const;
 
 
-
-private:
+  private:
     void reset_game_state();
     void distribute_pot();
     void print_table_card()const;
@@ -38,6 +52,8 @@ private:
 
     std::string phase_to_string();
     std::vector<size_t> folded_players;
+    std::vector<size_t> player_bets;
+
     GameProperties game_properties;
     Deck deck;
     std::vector<Card> table;

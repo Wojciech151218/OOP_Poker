@@ -14,7 +14,13 @@ add_executable(OOP_Poker
         source/Action.cpp
         source/Hand.cpp
         source/Player.cpp
-        source/UserInterface.cpp)
+        source/UserInterface.cpp
+        source/PokerAI.cpp
+        services/source/GetStateRequest.cpp
+        services/source/GetGameProperties.cpp
+        services/source/PostAction.cpp
+        services/headers/PostAction.h
+)
 
 # Include the Crow library and headers directory
 target_include_directories(OOP_Poker PRIVATE

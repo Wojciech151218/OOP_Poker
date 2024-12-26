@@ -3,6 +3,10 @@
 //
 
 #include "../headers/GameState.h"
+
+#include <random>
+
+
 #include "iostream"
 #include "../headers/Hand.h"
 #include "../headers/utils.h"
@@ -29,7 +33,7 @@ void GameState::increment_phase(GamePhase& phase)
 void GameState::reset_phase()
 {
     calling_players =0;
-    current_bet =0;
+    current_bet = 0;
     current_player = 0;
 }
 
@@ -128,15 +132,72 @@ void GameState::process_action(const Action& action)
         }
         reset_phase();
         increment_phase(phase);
+
     }
 }
 
+Action::ActionType GameState::make_random_action() {
+    // Initialize random number generator
+    std::random_device random_device; // Non-deterministic seed
+    std::mt19937 random_engine(random_device()); // Mersenne Twister engine
+    std::uniform_real_distribution<double> uniform_distribution(0.0, 1.0); // Uniform distribution in range [0.0, 1.0)
+
+    // Generate a random double
+    double random_probability = uniform_distribution(random_engine);
+
+    // Define action probability ranges
+    std::vector<std::pair<double, Action::ActionType>> action_probabilities = {
+        {0.1, Action::Fold},
+        {0.1, Action::BetRaise},
+        {0.8, Action::CheckCall}
+    };
+
+    // Ensure the probabilities sum to 1.0
+    double total_probability = 0.0;
+    for (let& action : action_probabilities) {
+        total_probability += action.first;
+    }
+
+    if (std::abs(total_probability - 1.0) > 1e-9) { // Error if total probability isn't close to 1.0
+        throw std::runtime_error("Action probabilities must sum to 1.0.");
+    }
+
+    // Determine the action based on random probability
+    double cumulative_probability = 0.0;
+    Action::ActionType selected_action_type = Action::Fold; // Default action
+
+    for (let& action : action_probabilities) {
+        cumulative_probability += action.first;
+        if (random_probability < cumulative_probability) {
+            selected_action_type = action.second;
+            break;
+        }
+    }
+
+    // Determine bet size based on selected action
+    int bet_size = (selected_action_type == Action::BetRaise) ? 20 : 0;
+
+    // Process the selected action
+    process_action(Action(bet_size, selected_action_type));
+    return selected_action_type;
+}
+
+
+
+bool GameState::check_if_is_current_player(size_t player) const {
+  return player == current_player;
+}
+
+const Player &GameState::get_current_player() const {
+    return players[current_player];
+}
 void GameState::reset_game_state()
 {
 
     table.clear();
     deck = Deck();
     phase = PreFlop;
+    player_bets.clear();
     deal_cards();
     pot = 0;
     current_player = 0;
@@ -150,8 +211,7 @@ void GameState::distribute_pot()
     let hand = Hand(table);
     let winners = hand.get_outcome(players);
     let split = winners.size();
-    for(let winner :winners)
-    {
+    for(let winner :winners){
         winner.get().give_earnings(pot/split);
     }
 }
@@ -160,8 +220,7 @@ void GameState::print_table_card() const
 {
     for (let & card : table )
     {
-        card.print();
-        std::cout<<" ";
+        std::cout<< card.to_string()<<" ";
     }
     std::cout<<'\n';
 

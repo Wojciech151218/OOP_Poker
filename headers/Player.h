@@ -20,8 +20,13 @@ public:
     void set_cards(std::vector<Card> & cards);
     Player(size_t starting_stake);
     PlayerStatus get_status() const;
+    size_t get_bank_roll() const;
     size_t get_starting_bet(size_t bet);
     void give_earnings(size_t earnings);
+    std::vector<Card> get_pocket_cards() const ;
+    static std::string status_to_string(const PlayerStatus & status);
+
+
 private:
     size_t bank_roll;
     PlayerStatus player_status;

@@ -4,6 +4,7 @@
 
 #ifndef CARD_H
 #define CARD_H
+#include <string>
 #include <vector>
 
 
@@ -14,10 +15,11 @@ public:
     static std::vector<Suit> all_suits();
     static std::vector<Rank> all_ranks();
 
-    void print() const;
+    std::string to_string() const;
     Card(Suit suit, Rank rank);
     Suit get_suit() const;
     Rank get_rank() const;
+
 private:
     Suit suit;
     Rank rank;
