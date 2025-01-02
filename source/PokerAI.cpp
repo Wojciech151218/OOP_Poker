@@ -14,7 +14,7 @@ PokerAI::PokerAI(GameState& game_state)
 }
 
 void PokerAI::random_move(){
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
     let action = game_state.make_random_action();
     std::cout<<"random move made "<< Action::from_action(action)<<"\n";
 }

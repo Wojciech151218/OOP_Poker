@@ -11,10 +11,10 @@
 class GetGameProperties {
 
 
-        GameState & game_state;
+        GameProperties & game_properties;
 public:
         // Constructor
-        GetGameProperties(GameState &game_state);
+        GetGameProperties(GameProperties &game_properties);
 
         // Method to fetch JSON data
         crow::json::wvalue getJsonResponse() const;

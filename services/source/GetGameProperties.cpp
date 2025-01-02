@@ -4,15 +4,17 @@
 
 #include "../headers/GetGameProperties.h"
 
-GetGameProperties::GetGameProperties(GameState& game_state):game_state(game_state){
 
-}
 
+GetGameProperties::GetGameProperties(GameProperties &game_properties):game_properties(game_properties) {}
 crow::json::wvalue GetGameProperties::getJsonResponse() const{
     crow::json::wvalue response;
 
-    response["playerNumber"] = game_state.get_players().size();
-    response["smallBet"] = 50;//todo
+    response["playerNumber"] = game_properties.player_number;
+    response["smallBet"] = game_properties.small_bet;
+    response["bigBet"] = game_properties.big_bet;
+
+
 
     return  response;
 }

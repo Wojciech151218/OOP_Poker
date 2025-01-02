@@ -16,18 +16,22 @@ class Player {
 public:
     enum PlayerStatus{InGame,Fold,AllIn};
     void print_player_status();
-    size_t do_action(const Action & action, size_t& calling_players, size_t current_bet);
+    size_t do_action(const Action &action, size_t current_bet);
     void set_cards(std::vector<Card> & cards);
-    Player(size_t starting_stake);
+    Player(size_t starting_stake,std::string  player_name);
     PlayerStatus get_status() const;
     size_t get_bank_roll() const;
     size_t get_starting_bet(size_t bet);
     void give_earnings(size_t earnings);
     std::vector<Card> get_pocket_cards() const ;
     static std::string status_to_string(const PlayerStatus & status);
+    void reset_status();
+    std::string get_player_name() const;
+
 
 
 private:
+    std::string player_name;
     size_t bank_roll;
     PlayerStatus player_status;
     std::vector<Card> pocket;

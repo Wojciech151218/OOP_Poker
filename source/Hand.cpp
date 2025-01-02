@@ -18,9 +18,16 @@ Hand::Category Hand::decide(const Player& player) const
 
 std::vector<std::reference_wrapper< Player>> Hand::get_outcome( std::vector<Player>& players) const
 {
-    std::vector<std::reference_wrapper< Player>>  strongest_players = {std::ref(players.front())};
+    std::vector<std::reference_wrapper< Player>> not_folded_players;
+    for(auto & player : players) {
+        let player_status = player.get_status();
+        if(player_status != Player::Fold)
+            not_folded_players.emplace_back(player);
+    }
+
+    std::vector<std::reference_wrapper< Player>>  strongest_players ;
     auto strongest_hand = decide(players.front());
-    for (auto & player : players)
+    for (auto  player : not_folded_players)
     {
         let player_hand = decide(player);
         if(get_numerical_category(strongest_hand) > get_numerical_category(player_hand))

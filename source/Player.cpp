@@ -5,6 +5,7 @@
 #include "../headers/Player.h"
 
 #include <iostream>
+#include <utility>
 
 #include "../headers/utils.h"
 
@@ -18,7 +19,7 @@ void Player::print_player_status()
 
 }
 
-size_t Player::do_action(const Action& action, size_t& calling_players, size_t current_bet)
+size_t Player::do_action(const Action &action, size_t current_bet)
 {
     if(player_status == Fold ) return 0;
     size_t chips_given = 0;
@@ -31,9 +32,8 @@ size_t Player::do_action(const Action& action, size_t& calling_players, size_t c
         return 0;
     case Action::CheckCall:
         bank_roll_int -= static_cast<int>(current_bet);
-        chips_given = action.get_bet_size();
-        calling_players++;
-        if(bank_roll_int<0)
+        chips_given = current_bet;
+        if(bank_roll_int<=0)
         {
             chips_given += bank_roll_int;
             bank_roll = 0;
@@ -46,7 +46,6 @@ size_t Player::do_action(const Action& action, size_t& calling_players, size_t c
     case Action::BetRaise:
         bank_roll_int -= static_cast<int>(action.get_bet_size());
         chips_given= action.get_bet_size();
-        calling_players = 0;
         if(bank_roll_int<0)
         {
             chips_given += bank_roll_int;
@@ -67,7 +66,8 @@ void Player::set_cards(std::vector<Card>& cards)
     pocket = cards;
 }
 
-Player::Player(size_t starting_stake):bank_roll(starting_stake),player_status(InGame)
+Player::Player(size_t starting_stake,std::string  player_name)
+:bank_roll(starting_stake),player_status(InGame),player_name(std::move(player_name))
 {
 
 }
@@ -80,13 +80,17 @@ size_t Player::get_bank_roll() const {
 void Player::give_earnings(size_t earnings) { bank_roll += earnings; }
 std::vector<Card> Player::get_pocket_cards() const { return pocket; }
 std::string Player::status_to_string(const PlayerStatus &status) {
-    switch (status) {
-    case AllIn:
-        return "AllIn";
-    case InGame:
-        return "InGame";
-    case Fold:
-        return "Fold";
-    }
+  switch (status) {
+  case AllIn:
+    return "AllIn";
+  case InGame:
+    return "InGame";
+  case Fold:
+    return "Fold";
+  }
+}
+void Player::reset_status() { player_status = InGame; }
+std::string Player::get_player_name() const {
+    return player_name;
 }
 

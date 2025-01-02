@@ -37,6 +37,15 @@ crow::json::wvalue GetStateRequest::getJsonResponse(int player_id) const {
     for(let bet : game_state.get_player_bets()){
         player_bets_json.emplace_back(bet);
     }
+    std::vector<crow::json::wvalue> all_statuses_json;
+    std::vector<crow::json::wvalue> player_names_json;
+
+    for(let player : game_state.get_players()) {
+        let status = player.get_status();
+        all_statuses_json.emplace_back(Player::status_to_string(status));
+        player_names_json.emplace_back(player.get_player_name());
+    }
+
 
     // Populate the JSON response
     response["currentPlayerId"] = game_state.get_current_player_index();
@@ -46,7 +55,11 @@ crow::json::wvalue GetStateRequest::getJsonResponse(int player_id) const {
     response["pot"] = game_state.get_pot();
     response["toCall"] = game_state.get_current_bet();
     response["playerBets"] = std::move(player_bets_json);
-    response["playerStatus"] = Player::status_to_string( game_state.get_current_player().get_status());
+    response["playerStatus"] = Player::status_to_string( game_state.get_players()[player_id].get_status());
+    response["allStatuses"] = std::move(all_statuses_json);
+    response["phase"] = game_state.get_phase_as_string();
+    response["playerNames"] = std::move(player_names_json);
+    response["isTransition"] = game_state.is_transition();
 
     return response;
 }
